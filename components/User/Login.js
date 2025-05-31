@@ -14,22 +14,62 @@ import {
     Alert,
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
-
+import Apis, { authApis, endpoints } from "../../configs/Apis";
+import qs from 'qs';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
+import { MyDispatchContext } from "../../configs/MyContexts";
 const Login = ({ navigation }) => {
+    // const [user, setUser] = useState({});
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const dispatch = useContext(MyDispatchContext);
 
-    const handleLogin = () => {
-        // Kiểm tra các trường dữ liệu đơn giản
-        if (!email || !password) {
-            Alert.alert("Error", "Please fill in all fields")
-            return
+
+
+
+    const login = async () => {
+        if (1 === 1) {
+            try {
+
+
+                const data = qs.stringify({
+                    username: email,
+                    password: password,
+                    client_id: '0kD0HdPxoNAAulYRDaC0A6eLVvrEglsxFa1oQklD',
+                    client_secret: 'mfQNgbxScxkSmx3GBFe7Tcijv2DYHOM7dbcUWuKCEo6mpDuuoCLdAbUpARLBlAr961xqz9aRVjJ6JBWEAjLuIPvfktBzy6helsw7ARPLIsCqp8hcAiu4CET9ZUW7pSGk',
+                    grant_type: 'password',
+                });
+
+                let res = await Apis.post(endpoints['login'], data, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                });
+
+                await AsyncStorage.setItem('token', res.data.access_token);
+
+                let u = await authApis(res.data.access_token).get(endpoints['current-user']);
+
+
+
+
+                dispatch({
+                    "type": "login",
+                    "payload": u.data
+                });
+                Alert.alert("Thành công", "Đăng nhập thành côngcông")
+                // navigation.navigate("Welcome", { email })
+            } catch (ex) {
+                console.error(ex);
+            } finally {
+                setLoading(false);
+            }
         }
-
-        // Giả lập đăng nhập thành công và chuyển đến màn hình Home
-        navigation.navigate("Home", { email })
     }
+
 
 
 
@@ -77,7 +117,7 @@ const Login = ({ navigation }) => {
                         <Text style={styles.forgotPasswordText}>Forgot password?</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                    <TouchableOpacity style={styles.loginButton} onPress={login}>
                         <Text style={styles.loginButtonText}>LOGIN</Text>
                     </TouchableOpacity>
 

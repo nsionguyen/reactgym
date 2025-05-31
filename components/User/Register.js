@@ -15,21 +15,53 @@ import {
 } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 
+import Apis, { authApis, endpoints } from "../../configs/Apis";
 const Register = ({ navigation }) => {
-    const [name, setName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [email1, setEmail1] = useState("")
+    const [height, setHeight] = useState("")
+    const [weight, setWeight] = useState("")
+    const [goal, setGoal] = useState("")
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         // Kiểm tra các trường dữ liệu đơn giản
-        if (!name || !email || !password) {
+        if (!lastName || !firstName || !email1 || !height || !weight || !goal || !email || !password) {
             Alert.alert("Error", "Please fill in all fields")
             return
         }
+        const data1 = new FormData();
+        data1.append('password', password);
+        data1.append('username', email);
+        data1.append('email', email1);
+        data1.append('first_name', firstName);
+        data1.append('last_name', lastName);
+        let res1 = await Apis.post(endpoints['register'], data1, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        let userId = res1.data.id;
+        const data2 = new FormData();
+        data2.append('height', height);
+        data2.append('weight', weight);
+        data2.append('goal', goal);
+        data2.append('user', userId);
+        let res2 = await Apis.post(endpoints['member-profile'], data2, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+
+        Alert.alert("Thành công", `${userId}`)
+
 
         // Giả lập đăng ký thành công và chuyển đến màn hình Home
-        navigation.navigate("Home", { name, email })
+        // navigation.navigate("Home", { name, email })
     }
 
     const handleSocialSignUp = (provider) => {
@@ -46,12 +78,37 @@ const Register = ({ navigation }) => {
 
                 <View style={styles.formContainer}>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputLabel}>Full name</Text>
-                        <TextInput style={styles.input} placeholder="Enter your full name" value={name} onChangeText={setName} />
+                        <Text style={styles.inputLabel}>Họ</Text>
+                        <TextInput style={styles.input} placeholder="Nhập họ" value={lastName} onChangeText={setLastName} />
                     </View>
 
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputLabel}>E-mail</Text>
+                        <Text style={styles.inputLabel}>Tên</Text>
+                        <TextInput style={styles.input} placeholder="Nhập têên" value={firstName} onChangeText={setFirstName} />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>gmail</Text>
+                        <TextInput style={styles.input} placeholder="Nhập gmail" value={email1} onChangeText={setEmail1} />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>Chiều cao </Text>
+                        <TextInput style={styles.input} placeholder="Nhập chieu cao" value={height} onChangeText={setHeight} />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>Cân nặng </Text>
+                        <TextInput style={styles.input} placeholder="Nhập can nang" value={weight} onChangeText={setWeight} />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>Mục ttiêu </Text>
+                        <TextInput style={styles.input} placeholder="Nhập muc tieu" value={goal} onChangeText={setGoal} />
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>Username </Text>
                         <TextInput
                             style={styles.input}
                             placeholder="Enter your email"
@@ -67,7 +124,25 @@ const Register = ({ navigation }) => {
                         <View style={styles.passwordContainer}>
                             <TextInput
                                 style={styles.passwordInput}
-                                placeholder="Enter your password"
+                                placeholder="Nhập mật khẩu"
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry={!showPassword}
+                            />
+                            <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
+                                <Ionicons name={showPassword ? "eye-off-outline" : "eye-outline"} size={24} color="gray" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    {/* weight */}
+
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.inputLabel}>Password</Text>
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={styles.passwordInput}
+                                placeholder="Nhập lại mật khẩu"
                                 value={password}
                                 onChangeText={setPassword}
                                 secureTextEntry={!showPassword}
@@ -89,13 +164,13 @@ const Register = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.dividerContainer}>
+                    {/* <View style={styles.dividerContainer}>
                         <View style={styles.divider} />
                         <Text style={styles.dividerText}>Sign up with</Text>
                         <View style={styles.divider} />
-                    </View>
+                    </View> */}
 
-                    <View style={styles.socialButtonsContainer}>
+                    {/* <View style={styles.socialButtonsContainer}>
                         <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialSignUp("Facebook")}>
                             <Image
                                 source={{
@@ -115,7 +190,7 @@ const Register = ({ navigation }) => {
                             />
                             <Text style={styles.socialButtonText}>GOOGLE</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
