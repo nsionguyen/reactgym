@@ -38,8 +38,8 @@ const Login = ({ navigation }) => {
                 const data = qs.stringify({
                     username: email,
                     password: password,
-                    client_id: '0kD0HdPxoNAAulYRDaC0A6eLVvrEglsxFa1oQklD',
-                    client_secret: 'mfQNgbxScxkSmx3GBFe7Tcijv2DYHOM7dbcUWuKCEo6mpDuuoCLdAbUpARLBlAr961xqz9aRVjJ6JBWEAjLuIPvfktBzy6helsw7ARPLIsCqp8hcAiu4CET9ZUW7pSGk',
+                    client_id: 'al4N7fjD0s08GLA8eUmCA14SQjzpQRadEcKACbiU',
+                    client_secret: 'R9XX6ftoLQzlRt41dem7AU0LEV1ST0DfyClOUF8WpO9ud8SN6S8dII35s9xi8wzbxmMVMndg5rwDLPnJLVXhiIjW8irJpJVJFNr0IXJe02VtogGwot90CECtGBXDljGI',
                     grant_type: 'password',
                 });
 
@@ -60,8 +60,8 @@ const Login = ({ navigation }) => {
                     "type": "login",
                     "payload": u.data
                 });
-                Alert.alert("Thành công", "Đăng nhập thành côngcông")
-                // navigation.navigate("Welcome", { email })
+                Alert.alert("Thành công", "Đăng nhập thành công")
+                navigation.navigate("home")
             } catch (ex) {
                 console.error(ex);
             } finally {
