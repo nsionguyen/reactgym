@@ -12,17 +12,36 @@ import {
     ScrollView,
     Alert,
 } from "react-native"
-const Home = () => {
+const Home = ({ navigation }) => {
     const user = useContext(MyUserContext);
+
+    const handleNav = () => {
+        navigation.navigate("chat")
+
+    }
+
 
     return (
         <View>
-            {user ? (
-                <Text>Xin chào, {user.email}, {user.role}</Text>
 
-            ) : (
-                <Text>Hãy đăng nhập.</Text>
-            )}
+            <Text>Xin chào, {user.email}, {user.role}</Text>
+            <TouchableOpacity
+                onPress={handleNav}
+                style={{
+                    backgroundColor: '#007bff',
+                    padding: 10,
+                    borderRadius: 5,
+                    alignItems: 'center',
+                }}
+            >
+                <Text style={{ color: '#fff', fontSize: 16 }}>Chuyen sang trang chat</Text>
+            </TouchableOpacity>
+
+
+
+
+
+
         </View>
     );
 };

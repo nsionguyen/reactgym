@@ -7,6 +7,7 @@ import Welcome from "./components/User/Welcome"
 import Login from "./components/User/Login"
 import Register from "./components/User/Register"
 import Home from "./components/Home/Home";
+import Chat from "./components/Home/Chat"
 
 import MyUserReducer from "./reducers/MyUserReducer";
 import { useContext, useReducer } from "react";
@@ -21,6 +22,9 @@ const TabNavigator = () => {
   return (
     <Stack.Navigator>
       <Tab.Screen name="index" component={Home} options={{ title: 'Trang chu' }} />
+      <Tab.Screen name="chat" component={Chat} options={{ title: 'Chat' }} />
+
+
 
     </Stack.Navigator>
   );
@@ -37,6 +41,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+
 
       </Stack.Navigator>
     </SafeAreaProvider>
