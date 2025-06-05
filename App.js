@@ -15,18 +15,40 @@ import { MyDispatchContext, MyUserContext } from "./configs/MyContexts";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import PtProfiles from "./components/Home/PtProfiles"
+import PtDetails from "./components/Home/PtDetails"
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator();
 
+const StackNavigator2 = () => {
+
+  return (
+    <SafeAreaProvider>
+      <StatusBar style="auto" />
+      <Stack.Navigator initialRouteName="pt-profiles" screenOptions={{ headerShown: false }} >
+        <Stack.Screen name="pt-profiles" component={PtProfiles} options={{ title: 'Danh sách pt' }} />
+        <Stack.Screen name="pt-details" component={PtDetails} options={{ title: 'Chi tiết pt', headerShown: true }} />
+
+
+      </Stack.Navigator>
+    </SafeAreaProvider>
+  );
+}
+
+
 const TabNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Tab.Screen name="index" component={Home} options={{ title: 'Trang chu' }} />
-      <Tab.Screen name="chat" component={Chat} options={{ title: 'Chat' }} />
+    <SafeAreaProvider>
+      <Tab.Navigator >
+        <Tab.Screen name="index" component={Home} options={{ title: 'Trang chu' }} />
+        <Tab.Screen name="chat" component={Chat} options={{ title: 'Chat' }} />
+        <Tab.Screen name="danh sách pt" component={StackNavigator2} />
 
 
 
-    </Stack.Navigator>
+
+      </Tab.Navigator>
+    </SafeAreaProvider>
   );
 }
 

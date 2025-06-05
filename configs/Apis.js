@@ -6,7 +6,10 @@ export const endpoints = {
     'login': '/o/token/',
     'current-user': '/users/current-user/',
     'member-profile': '/member-profiles/',
-    'register': '/users/'
+    'register': '/users/',
+    'pt-profiles': '/pt-profiles/',
+    'pt-details': (ptId) => `/pt-profiles/${ptId}/`,
+    'comments': (ptId) => `/pt-profiles/${ptId}/comments/`
 
 };
 
